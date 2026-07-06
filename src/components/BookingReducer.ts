@@ -1,5 +1,3 @@
-import { act } from "react";
-
 export interface TimeSlot {
     id: string;
     time: string;

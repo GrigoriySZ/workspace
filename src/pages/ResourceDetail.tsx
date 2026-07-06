@@ -64,7 +64,7 @@ export const ResourceDetail: React.FC = () => {
                 <button onClick={() => navigate('/booking')}>
                     &arrleft; Назад к каталогу
                 </button>
-                
+
                 <div>
                     <h1>{resource.name}</h1>
                     <p>{resource.floor} этаж * {resource.type === 'room' ? 'Комната' : 'Рабочая зона'}</p>
@@ -136,6 +136,9 @@ export const ResourceDetail: React.FC = () => {
                     >
                         Подтвердить
                     </button>
+                    {bookingMessage && (
+                        <div>{bookingMessage.text}</div>
+                    )}
                 </div>
             </div>
         </div>
