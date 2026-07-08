@@ -21,7 +21,7 @@ export const Dashboard: React.FC = () => {
     });
 
     return (
-        <div>
+        <div className="container">
             <h1>Привет, {user.name.split(' ')[0]}</h1>
             <div>
                 <div>

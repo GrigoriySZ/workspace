@@ -45,7 +45,7 @@ export const Booking: React.FC = () => {
 
 
     return (
-        <div>
+        <div className="container">
             <div>
                 <h1>Рабочее пространство</h1>
                 <button onClick={() => setShouldCrash(true)}>
