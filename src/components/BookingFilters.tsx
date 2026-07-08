@@ -41,46 +41,69 @@ export const BookingFilters: React.FC<BookingFiltersProps> = ({ filters, setFilt
     }
 
     return (
-        <div>
-            <div>
-                <label>Поиск ресурса</label>
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8 
+            grid grid-cols-1 md:grid-cols-3 gap-4"
+        >
+            <div className="flex flex-col gap-1">
+                <label className="text-xs font-semibold text-gray-500 uppercase">
+                    Поиск ресурса
+                </label>
                 <input 
                     ref={searchInput}
                     type='text'
                     value={filters.search}
                     onChange={handleInputChangle}
+                    className="w-full px-4 py-2 border border-gray-200 rounded-xl 
+                        focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
             </div>
-            <div>
-                <label>Дата бронирования</label>
+            <div className="flex flex-col gap-1">
+                <label className="text-xs font-semibold text-gray-500 uppercase">
+                    Дата бронирования
+                </label>
                 <input 
                     type='date'
                     value={filters.date}
                     onChange={handleDateChange}
+                    className="w-full px-4 py-2 border border-gray-200 rounded-xl 
+                        focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
             </div>
-            <div>
-                <label>Тип ресурса</label>
-                <div>
+            <div className="flex flex-col gap-1">
+                <label className="text-xs font-semibold text-gray-500 uppercase">
+                    Тип ресурса
+                </label>
+                <div className="flex bg-gray-100 p-1 rounded-lg">
                     {(['all', 'desk', 'room'] as const).map((t) => (
                         <button
                             key={t}
                             onClick={() => setFilters(prev => ({...prev, type: t}))}
+                            className={`flex-1 text-sm dont-medium py-1.5 rounded-md transition-colors
+                                ${filters.type === t 
+                                    ? 'bg-white color-text-gray-900' 
+                                    : 'text-gray-500 hover:text-gray-900'
+                                }`}
                         >
                             {t === 'all' ? 'Все' : t === 'desk' ? 'Места' : 'Комнаты'}
                         </button>
                     ))}
                 </div>
             </div>
-            <div ref={dropdownRef}>
-                <label>Этаж</label>
+            <div ref={dropdownRef} className="relative flex flex-col gap-1">
+                <label className="text-xs font-semibold text-gray-500 uppercase">
+                    Этаж
+                </label>
                 <button
                     onClick={() => setIsFloorOpen(!isFloorOpen)}
+                    className="w-full text-left px-4 py-2 border border-gray-200 rounded-lg bg-white
+                        focus:outline-none focus:ring-2 focus:ring-indigo-500
+                        flex justify-between items-center"
                 >
                     <span>{filters.floor === 'all' ? 'Все этажи' : `${filters.floor}`}</span>
                 </button>
                 {isFloorOpen && (
-                    <div>
+                    <div className="absolute top-[100%] left-0 w-full mt-1 bg-white border border-gray-200
+                        rounded-lg z-10 py-1">
                         {['all', 1, 2, 3].map((floor) => (
                             <button
                                 key={floor}
@@ -90,27 +113,32 @@ export const BookingFilters: React.FC<BookingFiltersProps> = ({ filters, setFilt
                                     );
                                     setIsFloorOpen(false);
                                 }}
+                                className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm text-gray"
                             >   
-                                {filters.floor === 'all' ? 'Все этажи' : `${filters.floor}`}
+                                {floor === 'all' ? 'Все этажи' : `${floor}`}
                             </button>
                         ))}
                     </div>
                 )}
             </div>
-            <div>
-                <label>
+            <div className="flex items-center gap-6 mt-4">
+                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase">
                     <input 
                         type='checkbox'
                         checked={filters.hasFlipchart}
                         onChange={() => handleChackboxChange('hasFlipchart')}
+                        className="w-4 h-4 text-indigo-600 border-gray-300 rounded 
+                            focus:ring-indigo-500"
                     />
                     Есть флипчарт
                 </label>
-                <label>
+                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase">
                     <input 
                         type='checkbox'
                         checked={filters.hasTypeC}
                         onChange={() => handleChackboxChange('hasTypeC')}
+                        className="w-4 h-4 text-indigo-600 border-gray-300 rounded 
+                            focus:ring-indigo-500"
                     />
                     Type-C монитор 
                 </label>
