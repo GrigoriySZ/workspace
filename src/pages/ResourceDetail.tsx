@@ -59,32 +59,87 @@ export const ResourceDetail: React.FC = () => {
     };
 
     return (
-        <div className="container">
-            <div>
-                <button onClick={() => navigate('/booking')}>
-                    &arrleft; Назад к каталогу
+        <div className=""
+        >
+            <div className="grid grid-cols-1 md:grid-cols-[3fr_minmax(260px,1fr)] gap-6">
+                <button 
+                    onClick={() => navigate('/booking')}
+                    className="text-sm text-gray-500 font-semibold text-left"
+                >
+                    ← Назад к каталогу
                 </button>
 
-                <div>
-                    <h1>{resource.name}</h1>
-                    <p>{resource.floor} этаж * {resource.type === 'room' ? 'Комната' : 'Рабочая зона'}</p>
-                    <h3>Расписание</h3>
-                    <div>
+                <div className="w-full col-start-1 p-6 bg-white row-span-2 
+                    border border-gray-100 shadow-sm rounded-xl"
+                >
+                    <div
+                        className="h-60 w-full mb-6 bg-gray-100 
+                            rounded-lg border border-gray-300"
+                    ></div>
+                    <h1
+                        className="text-xl text-black font-bold"
+                    >
+                        {resource.name}
+                    </h1>
+                    <p className="text-xs text-gray-500 font-semibold mb-4">
+                        {resource.floor} этаж • {resource.type === 'room' ? 'Комната' : 'Рабочая зона'}
+                        </p>
+                    <h3 className="text-black text-base font-bold">
+                        Расписание
+                    </h3>
+                    <p className="text-xs text-gray-400 mb-2">
+                        Наведите на слот, чтобы увидеть детали, и кликните для выбора
+                    </p>
+                    <div
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2"
+                    >
                         {DAY_SLOTS.map((slot) => {
                             const isOccupied = OCCUPIED_SLOTS.includes(slot.id);
                             const isSelected = state.selectedSlots.some(s => s.id === slot.id);
                             return (
-                                <div key={slot.id}>
+                                <div key={slot.id}
+                                    className="relative inline-block group"
+                                >
+                                    {/* Всплывающее окно с пояснением */}
+                                    <div className="absolute bottom-full left-1/2 p-2 mb-2  
+                                        -translate-x-1/2 border rounded-lg bg-gray-900
+                                        opacity-0 group-hover:opacity-100 invisible group-hover:visible
+                                        transition-opacity duration-300 ease-in-out 
+                                        pointer-events-none whitespace-nowrap"
+                                    >
+                                        <span className="block text-xs text-white font-semibold">
+                                            {slot.time}
+                                        </span>
+                                        <span className="block text-xs text-gray-500">
+                                            Стоимость: {slot.priceHours} ч.
+                                        </span>
+                                        {isOccupied && 
+                                            <span className="block text-xs text-red-500">
+                                                Помещение уже забронировано
+                                            </span>
+                                        }
+                                        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-900 
+                                            border-b border-l rotate-45"
+                                        ></div>
+                                    </div>
+
+                                    {/* Кнопка слота */}
                                     <button
                                         disabled={isOccupied}
                                         onClick={() => dispatch({type: 'TOGGLE_SLOT', payload: slot})}
+                                        className={`w-full p-2 flex flex-col justify-center items-center
+                                            border border-gray-300 hover:border-indigo-500 rounded-lg hover:disabled:border-gray-300
+                                            ${isSelected ? "bg-indigo-700 border-indigo-700 text-white" 
+                                                :"bg-white hover:bg-gray-100"} disabled:bg-gray-100
+                                            cursor-pointer transition-colors duration-200`}
                                     >
-                                        <span>{slot.time.split('-')[0]}</span>
-                                        <span>
-                                            {isOccupied ? 'Занят' : isSelected ? 'В черновику': 'Свободен'}
+                                        <span className={`text-sm ${isSelected ? 'text-white' : 'text-black'} font-semibold group-disabled:text-gray-500`}>
+                                            {slot.time.split('-')[0]}
+                                        </span>
+                                        <span className={`text-xs ${isSelected ? 'text-white' : 'text-gray-500'} group-disabled:text-gray-300`}>
+                                            {isOccupied ? 'Занят' : isSelected ? 'В черновике': 'Свободен'}
                                         </span>
                                     </button>
-                                    <div></div>
                                 </div>
                             );
                         })}
@@ -92,53 +147,65 @@ export const ResourceDetail: React.FC = () => {
                 </div>
 
                 <div>
-                    <div>
-                        <h3>Ваш лимит</h3>
-                        <p>{user.department}</p>
-                        <div>
-                            <span>{user.monthlyHoursLimit - user.usedHours}</span>
-                            <span>{user.monthlyHoursLimit} ч.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <h2>Черновик <span>{state.selectedSlots.length} слотов</span></h2>
-                    {state.selectedSlots.length === 0 ? (
-                        <div>Выберите доступные слоты</div>
-                    ) : (
-                        <div>
-                            {state.selectedSlots.map(slot => (
-                                <div key={slot.id}>
-                                    <div>
-                                        <p>{slot.time}</p>
-                                        <p>Засход {slot.priceHours}</p>
-                                    </div>
-                                    <button
-                                        onClick={() => dispatch({type: 'TOGGLE_SLOT', payload: slot})}
-                                    >
-                                        Удалить 
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-
-                <div>
-                    <div>
-                        <span>Итого к списанию:</span>
-                        <span>{totalHoursRequested}</span>
-                    </div>
-                    <button
-                        disabled={state.selectedSlots.length === 0}
-                        onClick={handleConfirmBooking}
+                    <div className="w-full p-4 border rounded-xl
+                        bg-linear-to-br from-indigo-800 to-indigo-950"
                     >
-                        Подтвердить
-                    </button>
-                    {bookingMessage && (
-                        <div>{bookingMessage.text}</div>
-                    )}
+                        <h3 className="text-white text-xs uppercase font-semibold mb-1 tracking-wider">
+                            Ваш лимит
+                        </h3>
+                        <p className="text-sm text-white mb-4">
+                            {user.department}
+                        </p>
+                        <div>
+                            <span className="text-white text-2xl font-semibold tracking-wide">
+                                {user.monthlyHoursLimit - user.usedHours}
+                                </span>
+                            <span className="text-white text-xs tracking-wide">
+                                /{user.monthlyHoursLimit} ч. осталось
+                                </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div>
+                        <h2>Черновик <span>{state.selectedSlots.length} слотов</span></h2>
+                        {state.selectedSlots.length === 0 ? (
+                            <div>Выберите доступные слоты</div>
+                        ) : (
+                            <div>
+                                {state.selectedSlots.map(slot => (
+                                    <div key={slot.id}>
+                                        <div>
+                                            <p>{slot.time}</p>
+                                            <p>Засход {slot.priceHours}</p>
+                                        </div>
+                                        <button
+                                            onClick={() => dispatch({type: 'TOGGLE_SLOT', payload: slot})}
+                                        >
+                                            Удалить 
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    <div>
+                        <div>
+                            <span>Итого к списанию:</span>
+                            <span>{totalHoursRequested}</span>
+                        </div>
+                        <button
+                            disabled={state.selectedSlots.length === 0}
+                            onClick={handleConfirmBooking}
+                        >
+                            Подтвердить
+                        </button>
+                        {bookingMessage && (
+                            <div>{bookingMessage.text}</div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

@@ -10,9 +10,9 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onSelectRe
     return (
         <div
             onClick={() => onSelectResource(resource.id)}
-            className="shadow-sm border border-gray-100 rounded-xl overflow-hidden"
+            className="shadow-sm border border-gray-100 rounded-xl overflow-hidden w-full"
         >
-            <div className="relative min-h-24 bg-gray-300">
+            <div className="relative min-h-40 bg-gray-300">
                 <span className={`
                     absolute top-4 right-4
                     text-white text-xs font-bold py-1 px-2 rounded-full
@@ -22,8 +22,8 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onSelectRe
                     {resource.type === 'room' ? 'Переговорная' : 'Рабочее место'}
                 </span>
             </div>
-            <div className="flex flex-col bg-white p-4 gap-4">
-                <div>
+            <div className="flex flex-col justify-between bg-white p-4 gap-4">
+                <div className="flex flex-col justify-stretch">
                     <h3 className="text-lg text-black font-bold ">
                         {resource.name}
                     </h3>
@@ -31,7 +31,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onSelectRe
                         Этаж {resource.floor}
                     </p>
                     <div
-                        className="flex gap-2"
+                        className="flex gap-2 w-full flex-wrap grow"
                     >
                         {resource.features.map(((feat, i) => (
                             <span key={i}
@@ -42,7 +42,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onSelectRe
                         )))}
                     </div>
                 </div>
-                <ActionButton  
+                <ActionButton
                     onAction={() => onSelectResource(resource.id)}
                     label="Посмотреть расписание"
                 />
