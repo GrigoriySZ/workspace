@@ -59,12 +59,12 @@ export const ResourceDetail: React.FC = () => {
     };
 
     return (
-        <div className=""
-        >
-            <div className="grid grid-cols-1 md:grid-cols-[3fr_minmax(260px,1fr)] gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
+            <div className="flex flex-col gap-6">
                 <button 
                     onClick={() => navigate('/booking')}
-                    className="text-sm text-gray-500 font-semibold text-left"
+                    className="text-sm text-gray-500 font-semibold text-left cursor-pointer 
+                    hover:text-indigo-500 transition-colors duration-300"
                 >
                     ← Назад к каталогу
                 </button>
@@ -145,7 +145,9 @@ export const ResourceDetail: React.FC = () => {
                         })}
                     </div>
                 </div>
+            </div>            
 
+            <div className="flex flex-col gap-6">
                 <div>
                     <div className="w-full p-4 border rounded-xl
                         bg-linear-to-br from-indigo-800 to-indigo-950"
@@ -167,21 +169,39 @@ export const ResourceDetail: React.FC = () => {
                     </div>
                 </div>
                 
-                <div>
+                <div className="w-full p-6 flex flex-col gap-4
+                    bg-white border border-gray-100 shadow-sm rounded-xl"
+                >
                     <div>
-                        <h2>Черновик <span>{state.selectedSlots.length} слотов</span></h2>
+                        <h2 className="w-full flex justify-between items-center text-lg font-bold mb-4">
+                            Черновик 
+                            <span className="text-xs text-gray-500 py-1 px-2 bg-gray-100 rounded-full">
+                                Слотов: {state.selectedSlots.length} 
+                            </span>
+                        </h2>
                         {state.selectedSlots.length === 0 ? (
-                            <div>Выберите доступные слоты</div>
+                            <div className="block w-full text-center h-40 content-center text-sm text-gray-400">
+                                Выберите доступные слоты времени на таймере слева
+                            </div>
                         ) : (
-                            <div>
+                            <div className="flex flex-col gap-2">
                                 {state.selectedSlots.map(slot => (
-                                    <div key={slot.id}>
+                                    <div key={slot.id}
+                                        className="w-full flex justify-between items-center py-2 px-4
+                                        bg-gray-50 border border-gray-100 rounded-lg"
+                                    >
                                         <div>
-                                            <p>{slot.time}</p>
-                                            <p>Засход {slot.priceHours}</p>
+                                            <p className="text-sm font-semibold tracking-wider text-black">
+                                                {slot.time}
+                                            </p>
+                                            <p className="text-xs text-gray-500 ">
+                                                Расход: {slot.priceHours} ч.
+                                            </p>
                                         </div>
                                         <button
                                             onClick={() => dispatch({type: 'TOGGLE_SLOT', payload: slot})}
+                                            className="text-xs text-gray-500 font-semibold cursor-pointer
+                                            hover:text-red-500 transition-colors duration-300 ease-in-out"
                                         >
                                             Удалить 
                                         </button>
@@ -191,19 +211,32 @@ export const ResourceDetail: React.FC = () => {
                         )}
                     </div>
 
-                    <div>
-                        <div>
-                            <span>Итого к списанию:</span>
-                            <span>{totalHoursRequested}</span>
+                    <div className="w-full flex justify-evenly items-center gap-6 flex-wrap
+                        border-t border-gray-100 pt-4"
+                    >
+                        <div className="min-w-50 flex justify-between items-baseline grow ">
+                            <span className="text-sm text-gray-500 font-semibold">
+                                Итого к списанию:
+                            </span>
+                            <span className="text-lg text-indigo-600 font-bold">
+                                {totalHoursRequested} ч.
+                            </span>
                         </div>
                         <button
                             disabled={state.selectedSlots.length === 0}
                             onClick={handleConfirmBooking}
+                            className="min-w-55 px-4 py-2 grow bg-white not-disabled:hover:bg-indigo-600 
+                            not-disabled:cursor-pointer border-2 rounded-lg border-indigo-600 disabled:border-gray-300
+                            font-semibold text-sm text-indigo-600  not-disabled:hover:text-white disabled:text-gray-300 
+                            transition-colors duration-300"
                         >
-                            Подтвердить
+                            Подтвердить бронирование
                         </button>
                         {bookingMessage && (
-                            <div>{bookingMessage.text}</div>
+                            <div className="w-full py-2 px-4 bg-indigo-600 rounded-xl
+                                text-center text-sm text-white font-semibold">
+                                {bookingMessage.text}
+                            </div>
                         )}
                     </div>
                 </div>

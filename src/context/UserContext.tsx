@@ -14,4 +14,4 @@ interface UserContextType {
     refundHours: (hours: number) => void;
 }
 
-export const UserContext = createContext<UserContextType | undefined>(undefin
+export const UserContext = createContext<UserContextType | undefined>(undefined);
