@@ -10,23 +10,39 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onSelectRe
     return (
         <div
             onClick={() => onSelectResource(resource.id)}
+            className="flex flex-col shadow-sm border border-gray-100 overflow-hidden rounded-xl w-full"
         >
-            <div>
-                <span>{resource.type === 'room' ? 'Переговорная' : 'Рабочее место'}</span>
+            <div className="relative min-h-40 bg-gray-300">
+                <span className={`
+                    absolute top-4 right-4
+                    text-white text-xs font-bold py-1 px-2 rounded-full
+                    ${resource.type === 'room' ? "bg-green-700" : "bg-purple-700"} 
+                `}
+                >
+                    {resource.type === 'room' ? 'Переговорная' : 'Рабочее место'}
+                </span>
             </div>
-            <div>
-                <div>
-                    <h3>{resource.name}</h3>
-                    <p>{resource.floor}</p>
-                    <div>
+            <div className="flex flex-col justify-between bg-white p-4 gap-4 flex-1">
+                <div className="flex flex-col justify-stretch grow">
+                    <h3 className="text-lg text-black font-bold ">
+                        {resource.name}
+                    </h3>
+                    <p className="text-sm text-gray-500 font-semibold mb-4 grow">
+                        Этаж {resource.floor}
+                    </p>
+                    <div
+                        className="flex gap-2 w-full flex-wrap"
+                    >
                         {resource.features.map(((feat, i) => (
-                            <span key={i}>
+                            <span key={i}
+                                className="bg-gray-100 py-1 px-2 text-sm text-black rounded-md"
+                            >
                                 {feat}
                             </span>
                         )))}
                     </div>
                 </div>
-                <ActionButton  
+                <ActionButton
                     onAction={() => onSelectResource(resource.id)}
                     label="Посмотреть расписание"
                 />
