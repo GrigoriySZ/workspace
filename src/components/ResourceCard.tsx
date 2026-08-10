@@ -10,7 +10,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onSelectRe
     return (
         <div
             onClick={() => onSelectResource(resource.id)}
-            className="shadow-sm border border-gray-100 rounded-xl overflow-hidden w-full"
+            className="flex flex-col shadow-sm border border-gray-100 overflow-hidden rounded-xl w-full"
         >
             <div className="relative min-h-40 bg-gray-300">
                 <span className={`
@@ -22,16 +22,16 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onSelectRe
                     {resource.type === 'room' ? 'Переговорная' : 'Рабочее место'}
                 </span>
             </div>
-            <div className="flex flex-col justify-between bg-white p-4 gap-4">
-                <div className="flex flex-col justify-stretch">
+            <div className="flex flex-col justify-between bg-white p-4 gap-4 flex-1">
+                <div className="flex flex-col justify-stretch grow">
                     <h3 className="text-lg text-black font-bold ">
                         {resource.name}
                     </h3>
-                    <p className="text-sm text-gray-500 font-semibold mb-4">
+                    <p className="text-sm text-gray-500 font-semibold mb-4 grow">
                         Этаж {resource.floor}
                     </p>
                     <div
-                        className="flex gap-2 w-full flex-wrap grow"
+                        className="flex gap-2 w-full flex-wrap"
                     >
                         {resource.features.map(((feat, i) => (
                             <span key={i}
